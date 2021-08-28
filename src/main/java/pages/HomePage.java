@@ -5,10 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class HomePage extends BasePage {
 
@@ -33,7 +37,7 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//*[contains(@id,'Content')]")
     private WebElement paraToCheck;
 
-    @FindBy(xpath = "//*[contains(@id,'lipsum')/p]")
+    @FindBy(xpath = "//*[contains(@id,'lipsum')]/p")
     private List<WebElement> paragraphsToCheck;
 
     @FindBy(xpath = "//*[contains(@id,'amount')]")
@@ -111,23 +115,21 @@ public class HomePage extends BasePage {
     }
 
     public double getWords(String expectedAmount) {
-        final String PARAGRAPH_SPLIT_REGEX = "\n\n";
+        Map<Integer,Integer> map = new HashMap<>();
         int count = 0;
         for (int i = 1; i <= 10; i++) {
             searchButton.click();
-            String str = paraToCheck.getText();
-            String[] paragraphs = str.split(PARAGRAPH_SPLIT_REGEX);
-            for (String paragraph : paragraphs) {
-                int indexR = str.indexOf(expectedAmount);
-                if (indexR == -1) {
-                    return 0;
-                } else {
+            List<WebElement> paragraphs = driver.findElements(By.xpath("//*[contains(@id,'lipsum')]/p"));
+            for (WebElement paragraph : paragraphs) {
+                String s = paragraph.getText();
+                if (paragraph.getText().contains(expectedAmount)){
                     count++;
                 }
-                return IntStream.of(new int[]{count}).average().getAsDouble();
             }
-            return 0;
+           map.put(i, count);
         }
-        return 0;
+
+        return Stream.of(map.values()).map(set->set.stream().collect(Collectors.summingInt(Integer::intValue)))
+                .collect(Collectors.averagingInt(Integer::intValue));
     }
 }
