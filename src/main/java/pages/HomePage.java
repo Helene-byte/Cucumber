@@ -1,59 +1,47 @@
 package pages;
 
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.stream.IntStream;
+
 public class HomePage extends BasePage {
 
-    @FindBy(xpath = "//header")
-    private WebElement header;
+    @FindBy(xpath = "//*[contains(@id,'Outer')]//*[contains(@id,'Languages')]")
+    private WebElement languagePanel;
 
-    @FindBy(xpath = "//footer")
-    private WebElement footer;
+    @FindBy(xpath = "//*[contains(@id,'Outer')]//*[contains(@id,'Languages')]//*[contains(@href,'ru')]")
+    private WebElement languageSelection;
 
-    @FindBy(xpath = "//*[contains(@class, '_3Wo6fpk')]/*[contains(@class,'_6')]/*[contains(@class,'DU')]")
-    private WebElement cartIcon;
-
-    @FindBy(xpath = ".//a[contains(@class, 'header-top-bar__input__language')]/span")
-    private WebElement languageButton;
-
-    @FindBy(xpath = "//*[contains(@class, '_3i')]/*[contains(@class,'_e')]")
-    private WebElement signInButton;
-
-    @FindBy(xpath = "//*[contains(@class, '_3i')]/*[contains(@class,'_2')]")
-    private WebElement registerButton;
-
-    @FindBy(xpath = "//*[contains(@class, '_3i')]/*[contains(@class,'_e')]")
-    private WebElement signInPopup;
-
-    @FindBy(xpath = "//*[contains(@class, '_3i')]/*[contains(@class,'_e')]/descendant::*[contains(text(),'Sign')]")
-    private WebElement emailField;
-
-    @FindBy(xpath = ".//input[@name='password'][contains(@placeholder, '*')]")
-    private WebElement passwordField;
-
-    @FindBy(xpath = "//div[@class='gigya-screen-dialog-close']")
-    private WebElement signInPopupCloseButton;
-
-    @FindBy(xpath = "//div[@class='header-store parbase']//button//span")
-    private WebElement storeButton;
-
-    @FindBy(xpath = "//div[@class='global-store__popup-wrapper']//div[@class='store-search']")
-    private WebElement storePopup;
-
-    @FindBy(xpath = "//input[@id='chrome-search']")
-    private WebElement searchField;
-
-    @FindBy(xpath = "//*[contains(@class, '_36m0W_u')]/descendant::*[contains(@class,'h-7')]/button")
+    @FindBy(xpath = "//*[contains(@id,'generate')]")
     private WebElement searchButton;
 
-    @FindBy(xpath = "//*[contains(@class, '_3')]/*[contains(@class,'_6')]/*[contains(@class,'_26')]")
-    private WebElement wishListProductsCount;
+    @FindBy(xpath = "//*[contains(@id,'start')]")
+    private WebElement checkBox;
 
-    @FindBy(xpath = "/descendant::*[contains(@class,'itemCount')]")
-    private WebElement wishListProductsCountText;
+    @FindBy(xpath = "//*[contains(@id,'words')]")
+    private WebElement wordsRadioButton;
+
+    @FindBy(xpath = "//*[contains(@id,'Content')]//*[contains(@id,'Panes')]//p")
+    private List<WebElement> panesToCheck;
+
+    @FindBy(xpath = "//*[contains(@id,'Content')]")
+    private WebElement paraToCheck;
+
+    @FindBy(xpath = "//*[contains(@id,'lipsum')/p]")
+    private List<WebElement> paragraphsToCheck;
+
+    @FindBy(xpath = "//*[contains(@id,'amount')]")
+    private WebElement searchField;
+
+
+    @FindBy(xpath = "//*[contains(@id,'lipsum')]/p")
+    private WebElement wordsList;
 
 
     public HomePage(WebDriver driver) {
@@ -64,75 +52,48 @@ public class HomePage extends BasePage {
         driver.get(url);
     }
 
-    public void isHeaderVisible() {
-        header.isDisplayed();
+
+    public void isLanguagePanelVisible() {
+        languagePanel.isDisplayed();
     }
 
-    public void isFooterVisible() {
-        footer.isDisplayed();
+    public void selectLanguage() {
+        languageSelection.click();
     }
 
-    public void isCartIconVisible() {
-        cartIcon.isDisplayed();
+    public void clickSearchButton() {
+        languageSelection.click();
     }
 
-    public String getLanguageButtonText() {
-        return languageButton.getText();
+    public void clickLoremIpsumButton() {
+        searchButton.click();
     }
 
-    public void isSignInButtonVisible() {
-        signInButton.isDisplayed();
+    public void clickCheckBox() {
+        checkBox.click();
     }
 
-    public void clickSignInButton() {
-        signInButton.click();
-    }
-    public void clickWishList() {
-        wishListProductsCount.click();
+    public void clickWords(String button) {
+        driver.findElement(By.xpath("//*[contains(@id,'" + button + "')]")).click();
     }
 
-    public void clickRegisterButton() {
-        registerButton.click();
+    public boolean getWordInPara(String expectedAmount) {
+        String str = (panesToCheck.get(0)).getText();
+        int indexR = str.indexOf(expectedAmount);
+        if (indexR == -1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public void isRegisterButtonVisible() {
-        registerButton.isDisplayed();
-    }
-
-    public boolean isEmailFieldVisible() {
-        return emailField.isDisplayed();
-    }
-
-    public boolean isPasswordFieldVisible() {
-        return passwordField.isDisplayed();
-    }
-
-    public WebElement getSignInPopup() {
-        return signInPopup;
-    }
-
-    public void clickSignInPopupCloseButton() {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", signInPopupCloseButton);
-    }
-
-    public void clickStoreButton() {
-        storeButton.click();
-    }
-
-    public boolean isStorePopupVisible() {
-        return storePopup.isDisplayed();
-    }
-
-    public void isSearchFieldVisible() {
-        searchField.isDisplayed();
-    }
-
-    public void clickCartButton() {
-        cartIcon.click();
-    }
-
-    public void clickLanguageButton() {
-        languageButton.click();
+    public boolean startsWithString(String expectedAmount) {
+        String str = paraToCheck.getText();
+        if (str.startsWith(expectedAmount)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void enterTextToSearchField(final String searchText) {
@@ -140,16 +101,33 @@ public class HomePage extends BasePage {
         searchField.sendKeys(searchText);
     }
 
-    public void clickSearchButton() {
-        searchButton.click();
+
+    public String getAmountOfWords() {
+        Scanner in = new Scanner(wordsList.getText());
+        int count = (int) Pattern.compile("\\W+")
+                .splitAsStream(in.nextLine())
+                .count();
+        return String.valueOf(count);
     }
 
-    public WebElement getWishListProductsCount() {
-        return wishListProductsCount;
+    public double getWords(String expectedAmount) {
+        final String PARAGRAPH_SPLIT_REGEX = "\n\n";
+        int count = 0;
+        for (int i = 1; i <= 10; i++) {
+            searchButton.click();
+            String str = paraToCheck.getText();
+            String[] paragraphs = str.split(PARAGRAPH_SPLIT_REGEX);
+            for (String paragraph : paragraphs) {
+                int indexR = str.indexOf(expectedAmount);
+                if (indexR == -1) {
+                    return 0;
+                } else {
+                    count++;
+                }
+                return IntStream.of(new int[]{count}).average().getAsDouble();
+            }
+            return 0;
+        }
+        return 0;
     }
-
-    public String getAmountOfProductsInWishList() {
-        return wishListProductsCountText.getText();
-    }
-
 }

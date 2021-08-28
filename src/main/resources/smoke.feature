@@ -1,55 +1,55 @@
 Feature: Smoke
   As a user
-  I want to test all main site functionality
+  I want to test some of site functionality
   So that I can be sure that site works correctly
 
-  Scenario Outline: Check add product to wishlist
+  Scenario Outline: Let's verify that the word "рыба" correctly appears in the first paragraph ("Что такое Lorem Ipsum?")
     Given User opens '<homePage>' page
-    And User checks search field visibility
-    When User makes search by keyword '<keyword>'
-    And User clicks search button
-    And User clicks wish list on first product
-    And User opens Wish List
-    Then User checks that amount of products in wish list are '<amountOfProducts>'
+    And User checks languages panel visibility
+    When User switch to Russian language
+    Then User verifies that the first paragraph, contains the word '<word>'
 
     Examples:
-      | homePage                            | keyword | amountOfProducts |
-      | https://www.asos.com/women/         | cake    | 1 item          |
-      | https://www.asos.com/women/         | cake    | 1 item          |
-      | https://www.asos.com/women/         | cake    | 1 item          |
+      | homePage                            | word                       |
+      |          https://lipsum.com/        | рыба                       |
 
-  Scenario Outline: Check site main functions
+
+
+  Scenario Outline: Let's verify that checkbox setting result in text starting with Lorem ipsum or not
     Given User opens '<homePage>' page
-    And User checks header visibility
-    And User checks footer visibility
-    And User checks search field visibility
-    And User checks cart visibility
-    And User checks register button visibility
-    And User checks sign in dropdown visibility
-    When User opens 'Sign In' dropdown
-    And User checks 'Sign In' visibility on 'Sign In' dropdown
-    And User opens shopping cart
-    Then User checks that shopping cart title visible
-
+    And User clicks on checkbox if '<click condition>'
+    And User clicks “Generate Lorem Ipsum” button
+    Then User checks that text starts with "Lorem ipsum dolor sit amet, consectetur adipiscing elit" is '<starts with condition>'
 
     Examples:
-      | homePage                            |
-      | https://www.asos.com/women/         |
+      | homePage             |   starts with condition                      | click condition  |
+      | https://lipsum.com/  |   true                                       | false            |
+      | https://lipsum.com/  |   false                                      | true             |
 
-  Scenario Outline: Check add product to cart
+
+
+  Scenario Outline: Let's verify that Lorem Ipsum is generated with correct size for different types of button
     Given User opens '<homePage>' page
-    And User checks search field visibility
-    When User makes search by keyword '<keyword>'
-    And User clicks search button
-    And User clicks 'Add to Cart' button on product
-    And User checks that add to cart popup visible
-    And User checks 'Continue to Cart' button visibility
-    Then User checks that add to cart popup header is '<header>'
-    And User clicks 'Continue to Cart' button
-    And User clicks 'Checkout' button
-    And User checks 'Sign in' screen visibility
+    And User clicks '<button type>'
+    Then User inputs into the number field '<number input>'
+    And User clicks “Generate Lorem Ipsum” button
+    Then User verifies that result has '<number result>' words
 
     Examples:
-      | homePage                            | keyword        | header          |
-      | https://www.asos.com/women/         | chicken nugget | My Bag,1 item   |
+      | homePage                         |   number input       | number result | button type |
+      |          https://lipsum.com/     |  10                  | 10            | words       |
+      |          https://lipsum.com/     |  -1                  | 1             | bytes       |
+      |          https://lipsum.com/     |  0                   | 5             | words       |
+      |          https://lipsum.com/     |  5                   | 1             | bytes       |
+      |          https://lipsum.com/     |  20                  | 20            | words       |
+
+  Scenario Outline: Let's verify that the word correctly appears in paragraph/s
+    Given User opens '<homePage>' page
+#    And User checks languages panel visibility
+#    When User switch to Russian language
+    Then User verifies '<word>'
+
+    Examples:
+      | homePage                            | word                       |
+      |          https://lipsum.com/        | lorem                      |
 
