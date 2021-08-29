@@ -43,14 +43,13 @@ Feature: Smoke
       |          https://lipsum.com/     |  5                   | 1             | bytes       |
       |          https://lipsum.com/     |  20                  | 20            | words       |
 
-  Scenario Outline: Let's verify that the word correctly appears in paragraph/s
+  Scenario Outline: Check that randomly generated text paragraphs contain the word "lorem" with probability
+    of more than 20%:
     Given User opens '<homePage>' page
     And User clicks “Generate Lorem Ipsum” button
-#    And User checks languages panel visibility
-#    When User switch to Russian language
-    Then User verifies '<word>'
+    Then User verifies that probability of '<word>' is more than '<percent>'
 
     Examples:
-      | homePage                            | word                       |
-      |          https://lipsum.com/        | lorem                      |
+      | homePage                            | word                       | percent |
+      |          https://lipsum.com/        | lorem                      | 20      |
 

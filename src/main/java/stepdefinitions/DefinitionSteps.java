@@ -117,9 +117,9 @@ public class DefinitionSteps {
     }
 
 
-    @And("User verifies {string}")
-    public void checkWords(final String expectedAmount) {
+    @And("User verifies that probability of {string} is more than {string}")
+    public void checkWords(final String expectedAmount, final String probability) {
         homePage.waitForPageLoadComplete(DEFAULT_TIMEOUT);
-        assertTrue(homePage.getWords(expectedAmount)> 2.0);
+        assertTrue(homePage.getWords(expectedAmount)> (Double.parseDouble(probability)/100));
     }
 }
