@@ -5,10 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -118,22 +115,25 @@ public class HomePage extends BasePage {
     }
 
     public double getWords(String expectedAmount) {
-        Map<Integer,Integer> map = new HashMap<>();
-        int count = 0;
+        ArrayList<Integer> countList = new ArrayList<>();
+
         for (int i = 1; i <= 10; i++) {
+            int count = 0;
             homePageButton.click();
             searchButton.click();
+
             for (WebElement paragraph : paragraphsToCheck) {
-                count = 0;
                 String s = paragraph.getText();
-                if (paragraph.getText().contains(expectedAmount)){
-                   count++;
+                if (paragraph.getText().toLowerCase().contains(expectedAmount)){
+                    count++;
                 }
             }
-           map.put(i, count);
+           countList.add(count);
         }
 
-        return Stream.of(map.values()).map(set->set.stream().collect(Collectors.summingInt(Integer::intValue)))
-                .collect(Collectors.averagingInt(Integer::intValue));
+        return countList.stream().
+                mapToInt(Integer::intValue)
+                .average()
+                .orElse(0.0);
     }
 }
