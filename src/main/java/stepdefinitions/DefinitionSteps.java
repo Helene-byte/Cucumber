@@ -90,7 +90,7 @@ public class DefinitionSteps {
     @And("User verifies that the first paragraph, contains the word {string}")
     public void checkWordinPara(final String expectedAmount) {
         homePage.waitForPageLoadComplete(DEFAULT_TIMEOUT);
-        assertEquals(homePage.getWordInPara(expectedAmount), true);
+        assertTrue(homePage.getWordInPara(expectedAmount));
     }
 
     @And("User checks that text starts with \"Lorem ipsum dolor sit amet, consectetur adipiscing elit\" is {string}")
@@ -120,6 +120,6 @@ public class DefinitionSteps {
     @And("User verifies {string}")
     public void checkWords(final String expectedAmount) {
         homePage.waitForPageLoadComplete(DEFAULT_TIMEOUT);
-        assertEquals((homePage.getWords(expectedAmount)), 3.0,0.00);
+        assertTrue(homePage.getWords(expectedAmount)> 2.0);
     }
 }
