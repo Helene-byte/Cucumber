@@ -25,6 +25,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//*[contains(@id,'generate')]")
     private WebElement searchButton;
 
+    @FindBy(xpath = "//*[contains(@href,'https://www.lipsum.com/')]")
+    private WebElement homePageButton;
+
     @FindBy(xpath = "//*[contains(@id,'start')]")
     private WebElement checkBox;
 
@@ -118,12 +121,13 @@ public class HomePage extends BasePage {
         Map<Integer,Integer> map = new HashMap<>();
         int count = 0;
         for (int i = 1; i <= 10; i++) {
+            homePageButton.click();
             searchButton.click();
-            List<WebElement> paragraphs = driver.findElements(By.xpath("//*[contains(@id,'lipsum')]/p"));
-            for (WebElement paragraph : paragraphs) {
+            for (WebElement paragraph : paragraphsToCheck) {
+                count = 0;
                 String s = paragraph.getText();
                 if (paragraph.getText().contains(expectedAmount)){
-                    count++;
+                   count++;
                 }
             }
            map.put(i, count);

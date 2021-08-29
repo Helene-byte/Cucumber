@@ -45,6 +45,7 @@ Feature: Smoke
 
   Scenario Outline: Let's verify that the word correctly appears in paragraph/s
     Given User opens '<homePage>' page
+    And User clicks “Generate Lorem Ipsum” button
 #    And User checks languages panel visibility
 #    When User switch to Russian language
     Then User verifies '<word>'

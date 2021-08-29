@@ -120,6 +120,6 @@ public class DefinitionSteps {
     @And("User verifies {string}")
     public void checkWords(final String expectedAmount) {
         homePage.waitForPageLoadComplete(DEFAULT_TIMEOUT);
-        assertEquals(homePage.getWords(expectedAmount), 4);
+        assertEquals((int)homePage.getWords(expectedAmount), 4);
     }
 }
