@@ -44,7 +44,7 @@ Feature: Smoke
       |          https://lipsum.com/     |  20                  | 20            | words       |
 
   Scenario Outline: Check that randomly generated text paragraphs contain the word "lorem" with probability
-    of more than 20%:
+    of more than 20%
     Given User opens '<homePage>' page
     And User clicks “Generate Lorem Ipsum” button
     Then User verifies that probability of '<word>' is more than '<percent>'

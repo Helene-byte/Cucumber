@@ -116,8 +116,8 @@ public class HomePage extends BasePage {
 
     public double getWords(String expectedAmount) {
         ArrayList<Integer> countList = new ArrayList<>();
-
-        for (int i = 1; i <= 10; i++) {
+        final int CLICKSNUMBER = 10;
+        for (int i = 1; i <= CLICKSNUMBER; i++) {
             int count = 0;
             homePageButton.click();
             searchButton.click();
